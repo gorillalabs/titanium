@@ -12,7 +12,8 @@
                                                 EdgeLabelMaker
                                                 VertexLabelMaker
                                                 PropertyKeyMaker]
-           [com.thinkaurelius.titan.core TitanGraph Multiplicity Cardinality Order RelationType]
+           [com.thinkaurelius.titan.core TitanGraph Multiplicity Cardinality RelationType]
+           [com.thinkaurelius.titan.graphdb.internal Order]
            [com.tinkerpop.blueprints Direction Edge Vertex]))
 
 (defn- ensure-collection
