@@ -10,7 +10,7 @@
 
 (ns clojurewerkz.titanium.query
   (:refer-clojure :exclude [count])
-  (:import  [com.tinkerpop.blueprints Vertex Edge Direction Query])
+  (:import  [org.apache.tinkerpop.gremlin.structure Vertex Edge Direction Query])
   (:require [potemkin :as po]
             [clojurewerkz.archimedes.query :as q]))
 

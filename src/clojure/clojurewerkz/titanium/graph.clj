@@ -12,14 +12,12 @@
   (:require [potemkin :as po]
             [clojurewerkz.archimedes.graph :as g])
   (:import  [com.thinkaurelius.titan.core TitanFactory TitanGraph]
-            [com.tinkerpop.blueprints Vertex Edge
-             Graph KeyIndexableGraph
-             TransactionalGraph TransactionalGraph$Conclusion]
+            [org.apache.tinkerpop.gremlin.structure Vertex Edge
+             Graph]
+            [org.apache.tinkerpop.gremlin.tinkergraph.structure TinkerGraph]
             [com.thinkaurelius.titan.core TitanTransaction]))
 
 (po/import-fn g/shutdown)
-(po/import-fn g/get-feature)
-(po/import-fn g/get-features)
 (po/import-fn g/new-transaction)
 (po/import-fn g/commit)
 (po/import-fn g/rollback)
@@ -38,7 +36,7 @@
     conf))
 
 (defprotocol TitaniumGraph
-  (^com.tinkerpop.blueprints.KeyIndexableGraph open [input] "Opens a new graph"))
+  (open [input] "Opens a new graph"))
 
 (extend-protocol TitaniumGraph
   String
@@ -62,17 +60,17 @@
 ;;
 
 (defn index-vertices-by-key!
-  [^KeyIndexableGraph g ^String k]
-  (.createKeyIndex g k com.tinkerpop.blueprints.Vertex))
+  [^TinkerGraph g ^String k]
+  (.createKeyIndex g k org.apache.tinkerpop.gremlin.structure.Vertex))
 
 (defn deindex-vertices-by-key!
-  [^KeyIndexableGraph g ^String k]
-  (.dropKeyIndex g k com.tinkerpop.blueprints.Vertex))
+  [^TinkerGraph g ^String k]
+  (.dropKeyIndex g k org.apache.tinkerpop.gremlin.structure.Vertex))
 
 (defn index-edges-by-key!
-  [^KeyIndexableGraph g ^String k]
-  (.createKeyIndex g k com.tinkerpop.blueprints.Edge))
+  [^TinkerGraph g ^String k]
+  (.createKeyIndex g k org.apache.tinkerpop.gremlin.structure.Edge))
 
 (defn deindex-edges-by-key!
-  [^KeyIndexableGraph g ^String k]
-  (.dropKeyIndex g k com.tinkerpop.blueprints.Edge))
+  [^TinkerGraph g ^String k]
+  (.dropKeyIndex g k org.apache.tinkerpop.gremlin.structure.Edge))

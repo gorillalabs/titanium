@@ -15,7 +15,7 @@
              :dev {:dependencies [[com.thinkaurelius.titan/titan-cassandra "1.0.0" :exclusions [org.slf4j/slf4j-log4j12]]
                                   [com.thinkaurelius.titan/titan-berkeleyje "1.0.0"]
                                   [com.thinkaurelius.titan/titan-es "1.0.0"]
-                                  [clojurewerkz/ogre "2.5.0.0"]
+                                  [clojurewerkz/ogre "3.0.0.0-SNAPSHOT"]
                                   [clojurewerkz/support "1.1.0" :exclusions [com.google.guava/guava
                                                                              org.clojure/clojure]]
 

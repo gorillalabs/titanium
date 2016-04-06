@@ -1,7 +1,8 @@
 (ns clojurewerkz.titanium.edges-test
   (:require [clojurewerkz.titanium.graph    :as tg]
             [clojurewerkz.titanium.vertices :as tv]
-            [clojurewerkz.titanium.edges    :as ted])
+            [clojurewerkz.titanium.edges    :as ted]
+            [clojurewerkz.titanium.schema :as ts])
   (:use clojure.test
         [clojurewerkz.titanium.test.support :only [graph-fixture *graph*]]))
 
@@ -96,6 +97,8 @@
   ;; ;;
 
   (testing "getting edge head and tail"
+    (ts/with-management-system [mgmt *graph*]
+      (ts/make-property-key mgmt "lines" String :cardinality :set))
     (tg/with-transaction [tx *graph*]
         (let [m1 {"station" "Boston Manor" "lines" #{"Piccadilly"}}
               m2 {"station" "Northfields"  "lines" #{"Piccadilly"}}
@@ -163,7 +166,7 @@
           edge (tg/with-transaction [tx *graph*]
                    (ted/connect! tx (tv/refresh tx v1) :connexion (tv/refresh tx v2) {:name "bob"}))]
       (is (tg/with-transaction [tx *graph*]
-              (= (.getId edge) (.getId (ted/refresh tx edge)))))
+              (= (.id edge) (.id (ted/refresh tx edge)))))
       (is (tg/with-transaction [tx *graph*]
               (is (= "bob" (:name (ted/to-map (ted/refresh tx edge)))))))))
 

@@ -14,7 +14,7 @@
                                                 PropertyKeyMaker]
            [com.thinkaurelius.titan.core TitanGraph Multiplicity Cardinality RelationType]
            [com.thinkaurelius.titan.graphdb.internal Order]
-           [com.tinkerpop.blueprints Direction Edge Vertex]))
+           [org.apache.tinkerpop.gremlin.structure Direction Edge Vertex]))
 
 (defn- ensure-collection
   "If `x` is a collecion, return that, otherwise return a single-element list
@@ -24,7 +24,7 @@
 
 (defn with-management-system*
   [^TitanGraph graph f & {:keys [rollback?]}]
-  (let [mgmt (.getManagementSystem graph)]
+  (let [mgmt (.openManagement graph)]
     (try
       (f mgmt)
       (if rollback? (.rollback mgmt) (.commit mgmt))

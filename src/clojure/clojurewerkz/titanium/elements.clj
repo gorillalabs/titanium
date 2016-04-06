@@ -11,7 +11,7 @@
 (ns clojurewerkz.titanium.elements
   (:refer-clojure :exclude [assoc! dissoc!])
   (:require [clojure.walk :as w])
-  (:import [com.tinkerpop.blueprints Element Vertex]
+  (:import [org.apache.tinkerpop.gremlin.structure Element Vertex]
            [com.thinkaurelius.titan.core TitanElement]))
 
 

@@ -15,6 +15,7 @@
     (ts/make-property-key mgmt :age        Long)
     (ts/make-property-key mgmt :first-name String)
     (ts/make-property-key mgmt :last-name  String)
+    (ts/make-property-key mgmt :lines      String :cardinality :set)
     (ts/build-composite-index mgmt "ixVname" :vertex [:vname] :unique? true)
     (ts/build-composite-index mgmt "ixAge" :vertex [:age])
     (ts/build-composite-index mgmt "ixFirstName" :vertex [:first-name])
@@ -23,8 +24,8 @@
   (testing "Adding a vertex."
     (tg/with-transaction [tx *graph*]
       (let [v (tv/create! tx {:name "Titanium" :language "Clojure"})]
-        (is (.getId v))
-        (is (= "Titanium" (.getProperty v "name"))))))
+        (is (.id v))
+        (is (= "Titanium" (.value (.property v "name")))))))
 
   (testing "Deletion of vertices."
     (tg/with-transaction [tx *graph*]
@@ -106,31 +107,31 @@
 
   (testing "Associng property map."
     (tg/with-transaction [tx *graph*]
-     (let [m  {:station "Boston Manor" :lines #{"Piccadilly"}}
-           v  (tv/create! tx m)]
-       ;;TODO this should be false, but for some reason it is
-       ;;returning null.
-       (ted/assoc! v :opened-in 1883  :has-wifi? "false")
-       (is (= (assoc m :opened-in 1883 :has-wifi? "false")
-              (dissoc (tv/to-map v) :__id__))))))
+      (let [m  {:station "Boston Manor" :lines #{"Piccadilly"}}
+            v  (tv/create! tx m)]
+        ;;TODO this should be false, but for some reason it is
+        ;;returning null.
+        (ted/assoc! v :opened-in 1883  :has-wifi? "false")
+        (is (= (assoc m :opened-in 1883 :has-wifi? "false")
+               (dissoc (tv/to-map v) :__id__)))))
 
-  (testing "Dissocing property map."
-    (tg/with-transaction [tx *graph*]
-      (let [m {:station "Boston Manor" :lines #{"Piccadilly"}}
-            v (tv/create! tx m)]
-        (ted/dissoc! v "lines")
-        (is (= {:station "Boston Manor"} (dissoc (tv/to-map v) :__id__))))))
+    (testing "Dissocing property map."
+      (tg/with-transaction [tx *graph*]
+        (let [m {:station "Boston Manor" :lines #{"Piccadilly"}}
+              v (tv/create! tx m)]
+          (ted/dissoc! v "lines")
+          (is (= {:station "Boston Manor"} (dissoc (tv/to-map v) :__id__))))))
 
-  (testing "Accessing a non existent node."
-    (tg/with-transaction [tx *graph*]
-      (is (nil? (tv/find-by-id tx 12388888888)))))
+    (testing "Accessing a non existent node."
+      (tg/with-transaction [tx *graph*]
+        (is (nil? (tv/find-by-id tx 12388888888)))))
 
-  (testing "Find by single id."
-    (tg/with-transaction [tx *graph*]
-      (let [v1 (tv/create! tx {:prop 1})
-            v1-id (tv/id-of v1)
-            v1-maybe (tv/find-by-id tx v1-id)]
-        (is (= 1 (tv/get v1-maybe :prop))))))
+    (testing "Find by single id."
+      (tg/with-transaction [tx *graph*]
+        (let [v1 (tv/create! tx {:prop 1})
+              v1-id (tv/id-of v1)
+              v1-maybe (tv/find-by-id tx v1-id)]
+          (is (= 1 (tv/get v1-maybe :prop)))))))
 
   (testing "Find by multiple ids."
     (tg/with-transaction [tx *graph*]
@@ -168,7 +169,7 @@
 
   (testing "Creating and immediately accessing a node with properties."
     (tg/with-transaction [tx *graph*]
-      (let [created (tv/create! tx {:key "value"})
+      (let [created (tv/create! tx {:mykey "value"})
             fetched (tv/find-by-id tx (tv/id-of created))]
         (is (= (tv/id-of created) (tv/id-of fetched)))
         (is (= (tv/to-map created) (tv/to-map fetched))))))
@@ -210,9 +211,9 @@
       (ts/make-vertex-label mgmt "Foo"))
     (tg/with-transaction [tx *graph*]
       (let [v1 (tv/create-with-label! tx "Foo")]
-        (is (.getId v1))
-        (is (= "Foo" (.getLabel v1))))
+        (is (.id v1))
+        (is (= "Foo" (.label v1))))
       (let [v2 (tv/create-with-label! tx "Foo" {:first-name "Zack"})]
-        (is (.getId v2))
-        (is (= "Foo" (.getLabel v2)))
-        (is (= "Zack" (.getProperty v2 "first-name")))))))
+        (is (.id v2))
+        (is (= "Foo" (.label v2)))
+        (is (= "Zack" (.value (.property v2 "first-name"))))))))

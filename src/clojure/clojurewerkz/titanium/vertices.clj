@@ -66,5 +66,5 @@
   ([g label]
      (create-with-label! g label {}))
   ([^TitanGraph g ^String label m]
-     (let [^Vertex new-vertex (.addVertexWithLabel g label)]
+     (let [^Vertex new-vertex (.addVertex g label)]
        (merge! new-vertex m))))
