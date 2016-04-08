@@ -65,6 +65,6 @@
   "Create a vertex with the specified label and optional property map."
   ([g label]
      (create-with-label! g label {}))
-  ([^TitanGraph g ^String label m]
-     (let [^Vertex new-vertex (.addVertex g label)]
+  ([^TitanGraph g ^clojure.lang.Keyword label m]
+   (let [^Vertex new-vertex (.addVertex g (name label))]
        (merge! new-vertex m))))
