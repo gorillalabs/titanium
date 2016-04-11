@@ -92,4 +92,27 @@
       (let [jupiter (.next (tv/find-by-kv tx :name "Jupiter"))]
         (is jupiter)
         (let [lives (ted/head-vertex (.next (tv/edges-of jupiter :out :lives)))]
-          (is "Sky" (tv/get lives :name)))))))
+          (is "Sky" (tv/get lives :name))))))
+
+  (testing "Graph variables"
+    (is (= nil
+           (tg/get-variable *graph* :test-var)))
+    (tg/set-variable *graph* :test-var "test-value")
+    (is (= "test-value"
+           (tg/get-variable *graph* :test-var)))
+    (tg/set-variable *graph* :test-var "test-value2") 
+    (is (= "test-value2"
+           (tg/get-variable *graph* :test-var)))
+    (tg/remove-variable *graph* :test-var)
+    (is (= nil
+           (tg/get-variable *graph* :test-var)))))
+
+
+
+
+
+
+
+
+
+

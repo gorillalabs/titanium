@@ -74,3 +74,19 @@
 (defn deindex-edges-by-key!
   [^TinkerGraph g ^String k]
   (.dropKeyIndex g k org.apache.tinkerpop.gremlin.structure.Edge))
+
+;;
+;; Graph Variables
+;;
+
+(defn get-variable [^Graph g ^clojure.lang.Keyword key]
+  (let [variable (.get (.variables g) (name key))]
+    (if (.isPresent variable)
+      (.get variable)
+      nil)))
+
+(defn set-variable [^Graph g ^clojure.lang.Keyword key value]
+  (.set (.variables g) (name key) value))
+
+(defn remove-variable [^Graph g ^clojure.lang.Keyword key]
+  (.remove (.variables g) (name key)))
