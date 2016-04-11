@@ -11,7 +11,7 @@
 (ns clojurewerkz.titanium.edges
   (:refer-clojure :exclude [keys vals assoc! dissoc! get find])
   (:require [potemkin :as po]
-            [clojurewerkz.archimedes.edge :as edge]
+            [clojurewerkz.ogre.edge :as edge]
             [clojurewerkz.titanium.elements :as elem]))
 
 ;;Titan elements
@@ -30,9 +30,11 @@
 
 ;;Modifying properties
 (po/import-fn edge/assoc!)
-(po/import-fn edge/merge!)
+; TODO was available in archimedes
+;(po/import-fn edge/merge!)
 (po/import-fn edge/dissoc!)
-(po/import-fn edge/update!)
+; TODO was available in archimedes
+;(po/import-fn edge/update!)
 (po/import-fn edge/clear!)
 
 ;;Transactions

@@ -5,7 +5,8 @@
   :dependencies [[org.clojure/clojure                "1.7.0"]
                  [com.thinkaurelius.titan/titan-core "1.0.0"]
                  [potemkin                           "0.3.3"]
-                 [gorillalabs/archimedes            "3.0.0.0-SNAPSHOT"]]
+                 [gorillalabs/archimedes            "3.0.0.0-SNAPSHOT"]
+                 [gorillalabs/ogre "3.0.0.0-SNAPSHOT"]]
   :source-paths  ["src/clojure"]
   :java-source-paths ["src/java"]
   :javac-options     ["-target" "1.6" "-source" "1.6"]
@@ -15,7 +16,6 @@
              :dev {:dependencies [[com.thinkaurelius.titan/titan-cassandra "1.0.0" :exclusions [org.slf4j/slf4j-log4j12]]
                                   [com.thinkaurelius.titan/titan-berkeleyje "1.0.0"]
                                   [com.thinkaurelius.titan/titan-es "1.0.0"]
-                                  [gorillalabs/ogre "3.0.0.0-SNAPSHOT"]
                                   [clojurewerkz/support "1.1.0" :exclusions [com.google.guava/guava
                                                                              org.clojure/clojure]]
 

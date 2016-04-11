@@ -10,14 +10,14 @@
 
 (ns clojurewerkz.titanium.graph
   (:require [potemkin :as po]
-            [clojurewerkz.archimedes.graph :as g])
+            [clojurewerkz.ogre.graph :as g])
   (:import  [com.thinkaurelius.titan.core TitanFactory TitanGraph]
             [org.apache.tinkerpop.gremlin.structure Vertex Edge
              Graph]
             [org.apache.tinkerpop.gremlin.tinkergraph.structure TinkerGraph]
             [com.thinkaurelius.titan.core TitanTransaction]))
 
-(po/import-fn g/shutdown)
+(po/import-fn g/close)
 (po/import-fn g/new-transaction)
 (po/import-fn g/commit)
 (po/import-fn g/rollback)

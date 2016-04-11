@@ -24,23 +24,23 @@
           nemean   (tv/create! tx {:name "Nemean"   :type "monster"})
           hydra    (tv/create! tx {:name "Hydra"    :type "monster"})
           cerberus (tv/create! tx {:name "Cerberus" :type "monster"})]
-      (ted/connect! tx neptune :lives sea)
-      (ted/connect! tx jupiter :lives sky)
-      (ted/connect! tx pluto :lives tartarus)
-      (ted/connect! tx jupiter :father saturn)
-      (ted/connect! tx hercules :father jupiter)
-      (ted/connect! tx hercules :mother alcmene)
-      (ted/connect! tx jupiter :brother pluto)
-      (ted/connect! tx pluto :brother jupiter)
-      (ted/connect! tx neptune :brother pluto)
-      (ted/connect! tx pluto :brother neptune)
-      (ted/connect! tx jupiter :brother neptune)
-      (ted/connect! tx neptune :brother jupiter)
-      (ted/connect! tx cerberus :lives tartarus)
-      (ted/connect! tx pluto :pet cerberus)
-      (ted/connect! tx hercules :battled nemean   {:times 1})
-      (ted/connect! tx hercules :battled hydra    {:times 2})
-      (ted/connect! tx hercules :battled cerberus {:times 12})
+      (ted/connect! neptune :lives sea)
+      (ted/connect! jupiter :lives sky)
+      (ted/connect! pluto :lives tartarus)
+      (ted/connect! jupiter :father saturn)
+      (ted/connect! hercules :father jupiter)
+      (ted/connect! hercules :mother alcmene)
+      (ted/connect! jupiter :brother pluto)
+      (ted/connect! pluto :brother jupiter)
+      (ted/connect! neptune :brother pluto)
+      (ted/connect! pluto :brother neptune)
+      (ted/connect! jupiter :brother neptune)
+      (ted/connect! neptune :brother jupiter)
+      (ted/connect! cerberus :lives tartarus)
+      (ted/connect! pluto :pet cerberus)
+      (ted/connect! hercules :battled nemean   {:times 1})
+      (ted/connect! hercules :battled hydra    {:times 2})
+      (ted/connect! hercules :battled cerberus {:times 12})
 
       (let [r1 (g/query saturn
                         (g/<-- [:father])
@@ -87,5 +87,5 @@
 
         
         ;; (is (= #{{:god "Neptune" :place "Sea"} {:god "Jupiter" :place "Sky"}}
-        ;;        (set r5)))
+        ;;        (set r5)))\
         ))))

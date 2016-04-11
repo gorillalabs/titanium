@@ -46,7 +46,7 @@
           (try
             (f)
             (finally
-              (tg/shutdown *graph*))))
+              (tg/close *graph*))))
         (finally
           (FileUtils/deleteQuietly tmpdir))))))
 

@@ -11,9 +11,10 @@
 (ns clojurewerkz.titanium.vertices
   (:refer-clojure :exclude [keys vals assoc! dissoc! get find])
   (:require [potemkin :as po]
-            [clojurewerkz.archimedes.vertex :as vertex]
+            [clojurewerkz.ogre.vertex :as vertex]
             [clojurewerkz.titanium.elements :as elem])
-  (:import [com.thinkaurelius.titan.core TitanGraph]))
+  (:import [com.thinkaurelius.titan.core TitanGraph]
+           [org.apache.tinkerpop.gremlin.structure Vertex]))
 
 ;;Titan elements
 (po/import-fn elem/new?)
@@ -27,12 +28,15 @@
 (po/import-fn vertex/vals)
 (po/import-fn vertex/id-of)
 (po/import-fn vertex/to-map)
+(po/import-fn elem/label-of)
 
 ;;Modifying properties
 (po/import-fn vertex/assoc!)
+
 (po/import-fn vertex/merge!)
 (po/import-fn vertex/dissoc!)
-(po/import-fn vertex/update!)
+;; TODO was present in archimedes
+;(po/import-fn vertex/update!)
 (po/import-fn vertex/clear!)
 
 ;;Transactions
@@ -65,6 +69,13 @@
   "Create a vertex with the specified label and optional property map."
   ([g label]
      (create-with-label! g label {}))
-  ([^TitanGraph g ^clojure.lang.Keyword label m]
+  ([^TitanGraph g ^String label m]
    (let [^Vertex new-vertex (.addVertex g (name label))]
-       (merge! new-vertex m))))
+     (merge! new-vertex m))))
+
+
+
+
+
+
+

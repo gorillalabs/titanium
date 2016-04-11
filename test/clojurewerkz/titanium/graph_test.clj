@@ -4,7 +4,7 @@
             [clojurewerkz.titanium.edges    :as ted]
             [clojurewerkz.titanium.schema   :as ts]
             [clojurewerkz.support.io        :as sio]
-            [clojurewerkz.archimedes.graph  :as c])
+            [clojurewerkz.ogre.graph  :as c])
   (:use clojure.test
         [clojurewerkz.titanium.test.support :only (graph-fixture *graph*)])
   (:import org.apache.commons.io.FileUtils
@@ -17,13 +17,13 @@
 (deftest open-and-close-a-local-graph-with-a-shortcut
   (let [d (sio/create-temp-dir)]
     (is (let [graph (tg/open (str "berkeleyje:" (.getPath d)))]
-          (and graph (nil? (tg/shutdown graph)))))))
+          (and graph (nil? (tg/close graph)))))))
 
 (deftest test-open-and-close-a-local-graph-with-a-connfiguration-map
   (let [d (sio/create-temp-dir)]
     (is (let [graph  (tg/open {"storage.directory" (.getPath d)
                                "storage.backend"  "berkeleyje"})]
-          (and graph (nil? (tg/shutdown graph)))))))
+          (and graph (nil? (tg/close graph)))))))
 
 (deftest test-conf-graph
   (testing "Graph type"
@@ -66,30 +66,30 @@
              nemean   (tv/create! tx {:name "Nemean"   :type "monster"})
              hydra    (tv/create! tx {:name "Hydra"    :type "monster"})
              cerberus (tv/create! tx {:name "Cerberus" :type "monster"})]
-         (ted/connect! tx neptune :lives sea)
-         (ted/connect! tx jupiter :lives sky)
-         (ted/connect! tx pluto :lives tartarus)
-         (ted/connect! tx jupiter :father saturn)
-         (ted/connect! tx hercules :father jupiter)
-         (ted/connect! tx hercules :mother alcmene)
-         (ted/connect! tx jupiter :brother pluto)
-         (ted/connect! tx pluto :brother jupiter)
-         (ted/connect! tx neptune :brother pluto)
-         (ted/connect! tx pluto :brother neptune)
-         (ted/connect! tx jupiter :brother neptune)
-         (ted/connect! tx neptune :brother jupiter)
-         (ted/connect! tx cerberus :lives tartarus)
-         (ted/connect! tx pluto :pet cerberus)
-         (ted/connect! tx hercules :battled nemean   {:times 1})
-         (ted/connect! tx hercules :battled hydra    {:times 2})
-         (ted/connect! tx hercules :battled cerberus {:times 12})
+         (ted/connect! neptune :lives sea)
+         (ted/connect! jupiter :lives sky)
+         (ted/connect! pluto :lives tartarus)
+         (ted/connect! jupiter :father saturn)
+         (ted/connect! hercules :father jupiter)
+         (ted/connect! hercules :mother alcmene)
+         (ted/connect! jupiter :brother pluto)
+         (ted/connect! pluto :brother jupiter)
+         (ted/connect! neptune :brother pluto)
+         (ted/connect! pluto :brother neptune)
+         (ted/connect! jupiter :brother neptune)
+         (ted/connect! neptune :brother jupiter)
+         (ted/connect! cerberus :lives tartarus)
+         (ted/connect! pluto :pet cerberus)
+         (ted/connect! hercules :battled nemean   {:times 1})
+         (ted/connect! hercules :battled hydra    {:times 2})
+         (ted/connect! hercules :battled cerberus {:times 12})
          true))))
 
   (testing "Query graph"
     (tg/with-transaction [tx *graph*]
       (is (= #{"Jupiter" "Neptune" "Pluto"}
-             (set (map (fn [v] (tv/get v :name)) (tv/find-by-kv tx :type "god")))))
-      (let [jupiter (first (tv/find-by-kv tx :name "Jupiter"))]
+             (set (map (fn [v] (tv/get v :name)) (iterator-seq (tv/find-by-kv tx :type "god"))))))
+      (let [jupiter (.next (tv/find-by-kv tx :name "Jupiter"))]
         (is jupiter)
-        (let [lives (ted/head-vertex (first (tv/edges-of jupiter :out :lives)))]
+        (let [lives (ted/head-vertex (.next (tv/edges-of jupiter :out :lives)))]
           (is "Sky" (tv/get lives :name)))))))
