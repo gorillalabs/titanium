@@ -12,6 +12,7 @@
   (:refer-clojure :exclude [keys vals assoc! dissoc! get find])
   (:require [potemkin :as po]
             [clojurewerkz.ogre.vertex :as vertex]
+            [clojurewerkz.ogre.element :as oelement]
             [clojurewerkz.titanium.elements :as elem])
   (:import [com.thinkaurelius.titan.core TitanGraph]
            [org.apache.tinkerpop.gremlin.structure Vertex]))
@@ -28,7 +29,7 @@
 (po/import-fn vertex/vals)
 (po/import-fn vertex/id-of)
 (po/import-fn vertex/to-map)
-(po/import-fn elem/label-of)
+(po/import-fn oelement/label-of)
 
 ;;Modifying properties
 (po/import-fn vertex/assoc!)
