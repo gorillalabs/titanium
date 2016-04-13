@@ -42,38 +42,38 @@
       (ted/connect! hercules :battled hydra    {:times 2})
       (ted/connect! hercules :battled cerberus {:times 12})
 
-      (let [r1 (g/query saturn
+      (let [r1 (g/query (g/V saturn)
                         (g/<-- [:father])
                         (g/<-- [:father])
                         g/first-of!)
-            r2 (g/query hercules
+            r2 (g/query (g/V hercules)
                         (g/out :father :mother)
                         (g/properties :name)
                         g/into-set!)
-            r3 (g/query hercules
+            r3 (g/query (g/V hercules)
                         (g/-E> [:battled])
                         (g/has :times > 1)
                         (g/in-vertex)
                         (g/properties :name)
                         g/into-set!)
-            c3 (g/query hercules
+            c3 (g/query (g/V hercules)
                         (g/-E> [:battled])
                         (g/has :times > 1)
                         (g/in-vertex)
                         g/count!)
-            r4 (g/query pluto
+            r4 (g/query (g/V pluto)
                         (g/--> :lives)
                         (g/<-- [:lives])
 ;                        (g/except [pluto])
                         (g/properties :name)
                         g/into-set!)
             r9 (g/into-set! (t/values (t/in (t/out (t/V (.traversal (.graph pluto))) :lives) :lives) :name))
-            r5 (g/query pluto
+            r5 (g/query (g/V pluto)
                         (g/--> :brother)
                         (g/as  :god)
                         (g/--> :lives)
                         (g/as  :place)
-                        ;(g/select (g/properties :name))
+                        (g/select-only :name)
                         g/all-into-maps!)]
         (is (= r1 hercules))
         (is (= r2 #{"Alcmene" "Jupiter" "Saturn"}))

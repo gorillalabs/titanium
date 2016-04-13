@@ -61,19 +61,19 @@
 
 (defn index-vertices-by-key!
   [^TinkerGraph g ^String k]
-  (.createKeyIndex g k org.apache.tinkerpop.gremlin.structure.Vertex))
+  (.createIndex g k org.apache.tinkerpop.gremlin.structure.Vertex))
 
 (defn deindex-vertices-by-key!
   [^TinkerGraph g ^String k]
-  (.dropKeyIndex g k org.apache.tinkerpop.gremlin.structure.Vertex))
+  (.dropIndex g k org.apache.tinkerpop.gremlin.structure.Vertex))
 
 (defn index-edges-by-key!
   [^TinkerGraph g ^String k]
-  (.createKeyIndex g k org.apache.tinkerpop.gremlin.structure.Edge))
+  (.createIndex g k org.apache.tinkerpop.gremlin.structure.Edge))
 
 (defn deindex-edges-by-key!
   [^TinkerGraph g ^String k]
-  (.dropKeyIndex g k org.apache.tinkerpop.gremlin.structure.Edge))
+  (.dropIndex g k org.apache.tinkerpop.gremlin.structure.Edge))
 
 ;;
 ;; Graph Variables
