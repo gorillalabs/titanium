@@ -12,14 +12,15 @@
   (:refer-clojure :exclude [count])
   (:import  [org.apache.tinkerpop.gremlin.structure Vertex Edge Direction Query])
   (:require [potemkin :as po]
-            [clojurewerkz.archimedes.query :as q]))
+            [clojurewerkz.archimedes.query :as q]
+            [clojurewerkz.ogre.filter :as f]))
 
 (po/import-fn q/start-at)
-(po/import-macro q/has)
-(po/import-fn q/interval)
+(po/import-macro f/has)
+(po/import-fn f/interval)
 (po/import-fn q/direction)
 (po/import-fn q/labels)
-(po/import-fn q/limit)
+(po/import-fn f/limit)
 (po/import-macro q/find-vertices)
 (po/import-macro q/find-edges)
 (po/import-macro q/count)
