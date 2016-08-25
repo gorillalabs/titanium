@@ -11,7 +11,7 @@
 (deftest element-test
   (testing "Get keys."
     (g/with-transaction [tx *graph*]
-       (let [a (v/create! tx {:name "v1" :a 1 :b 1})
+                        (let [a (v/create! tx {:name "v1" :a 1 :b 1})
              b (v/create! tx {:name "v2" :a 1 :b 1})
              c (e/connect! a :test-label b {:prop "e1" :a 1 :b 1})
              coll-a (v/keys a)
@@ -23,7 +23,7 @@
 
   (testing "Get id."
     (g/with-transaction [tx *graph*]
-       (let [a (v/create! tx)
+                        (let [a (v/create! tx)
              b (v/create! tx)
              c (e/connect! a :test-label b )]
          (is (= java.lang.Long (type (v/id-of a))))
@@ -31,7 +31,7 @@
 
   (testing "Remove property!"
     (g/with-transaction [tx *graph*]
-       (let [a (v/create! tx {:a 1})
+                        (let [a (v/create! tx {:a 1})
              b (v/create! tx)
              c (e/connect! a :test-label b {:a 1})]
          (v/dissoc! a :a)
