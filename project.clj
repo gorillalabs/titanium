@@ -6,7 +6,7 @@
                  [com.thinkaurelius.titan/titan-core "1.1.0g-SNAPSHOT"]
                  [potemkin "0.4.3"]
                  [gorillalabs/archimedes "3.0.0.1-SNAPSHOT"]
-                 [gorillalabs/ogre "3.0.3.1-SNAPSHOT"]]
+                 [gorillalabs/ogre "3.0.3.1"]]
   :source-paths  ["src/clojure"]
   :java-source-paths ["src/java"]
   :javac-options     ["-target" "1.6" "-source" "1.6"]
