@@ -13,9 +13,9 @@
   :profiles {:1.5    {:dependencies [[org.clojure/clojure "1.5.1"]]}
              :1.7    {:dependencies [[org.clojure/clojure "1.7.0"]]}
              :master {:dependencies [[org.clojure/clojure "1.8.0-master-SNAPSHOT"]]}
-             :dev    {:dependencies [[com.thinkaurelius.titan/titan-cassandra "1.1.0g-SNAPSHOT" :exclusions [org.slf4j/slf4j-log4j12 joda-time]]
+             :dev    {:dependencies [[com.thinkaurelius.titan/titan-cassandra "1.1.0g-SNAPSHOT" :exclusions [org.slf4j/slf4j-log4j12 joda-time com.ning/compress-lzf]]
                                      [com.thinkaurelius.titan/titan-berkeleyje "1.1.0g-SNAPSHOT"]
-                                     [com.thinkaurelius.titan/titan-es "1.1.0g-SNAPSHOT" :exclusions [com.ning/compress-lzf]]
+                                     [com.thinkaurelius.titan/titan-es "1.1.0g-SNAPSHOT"]
                                      [clojurewerkz/support "1.1.0" :exclusions [com.google.guava/guava
                                                                                 org.clojure/clojure]]
 
