@@ -1,4 +1,4 @@
-(defproject gorillalabs/titanium "1.0.2"
+(defproject gorillalabs/titanium "1.0.3"
   :description "Titanium a powerful Clojure graph library build on top of Aurelius Titan"
   :url "http://titanium.clojurewerkz.org"
   :license {:name "Eclipse Public License"}
@@ -6,7 +6,7 @@
                  [gorillalabs/titan-core "1.1.0g"]
                  [potemkin "0.4.3"]
                  [gorillalabs/archimedes "3.0.0.1"]
-                 [gorillalabs/ogre "3.0.3.1"]]
+                 [gorillalabs/ogre "3.0.4.1"]]
   :source-paths  ["src/clojure"]
   :java-source-paths ["src/java"]
   :javac-options     ["-target" "1.6" "-source" "1.6"]
