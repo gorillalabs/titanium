@@ -2,8 +2,8 @@
   (:require [clojurewerkz.titanium.graph    :as tg]
             [clojurewerkz.titanium.vertices :as tv]
             [clojurewerkz.titanium.edges    :as ted]
-            [clojurewerkz.ogre.traversal :as t]
-            [clojurewerkz.ogre.core :as g])
+            [clojurewerkz.ogre.core :as g]
+            [clojurewerkz.ogre.util :as u])
   (:use clojure.test
         [clojurewerkz.titanium.test.support :only (*graph* graph-fixture)]))
 
@@ -11,7 +11,7 @@
 
 ;; The Graph of the Gods example from the Titan wiki
 (deftest test-integration-example1
-  (tg/with-transaction [tx *graph*]
+  #_(tg/with-transaction [tx *graph*]
     (let [saturn   (tv/create! tx {:name "Saturn"   :type "titan"})
           jupiter  (tv/create! tx {:name "Jupiter"  :type "god"})
           hercules (tv/create! tx {:name "Hercules" :type "demigod"})
@@ -42,39 +42,33 @@
       (ted/connect! hercules :battled hydra    {:times 2})
       (ted/connect! hercules :battled cerberus {:times 12})
 
-      (let [r1 (g/query (g/V saturn)
-                        (g/<-- [:father])
-                        (g/<-- [:father])
-                        g/first-of!)
-            r2 (g/query (g/V hercules)
+      (let [r1 (g/traverse (g/V saturn)
+                        (g/in [:father])
+                        (g/in [:father])
+                        g/next!)
+            r2 (g/traverse (g/V hercules)
                         (g/out :father :mother)
                         (g/properties :name)
                         g/into-set!)
-            r3 (g/query (g/V hercules)
-                        (g/-E> [:battled])
+            r3 (g/traverse (g/V hercules)
+                        (g/outE [:battled])
                         (g/has :times > 1)
-                        (g/in-vertex)
+                        (g/inV)
                         (g/properties :name)
                         g/into-set!)
-            c3 (g/query (g/V hercules)
-                        (g/-E> [:battled])
+            c3 (g/traverse (g/V hercules)
+                        (g/outE [:battled])
                         (g/has :times > 1)
-                        (g/in-vertex)
-                        g/count!)
-            r4 (g/query (g/V pluto)
-                        (g/--> :lives)
-                        (g/<-- [:lives])
+                        (g/inV)
+                        g/count)
+            r4 (g/traverse (g/V pluto)
+                        (g/out :lives)
+                        (g/in [:lives])
 ;                        (g/except [pluto])
                         (g/properties :name)
                         g/into-set!)
-            r9 (g/into-set! (t/values (t/in (t/out (t/V (.traversal (.graph pluto))) :lives) :lives) :name))
-            r5 (g/query (g/V pluto)
-                        (g/--> :brother)
-                        (g/as  :god)
-                        (g/--> :lives)
-                        (g/as  :place)
-                        (g/select-only :name)
-                        g/all-into-maps!)]
+            r9 (g/into-set! (g/values (g/in (g/out (g/V (.traversal (.graph pluto))) :lives) :lives) :name))
+            ]
         (is (= r1 hercules))
         (is (= r2 #{"Alcmene" "Jupiter" "Saturn"}))
         (is (= r3 #{"Cerberus" "Hydra"}))

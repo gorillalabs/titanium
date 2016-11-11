@@ -4,7 +4,9 @@
             [clojurewerkz.titanium.edges    :as ted]
             [clojurewerkz.titanium.schema   :as ts]
             [clojurewerkz.support.io        :as sio]
-            [clojurewerkz.ogre.graph  :as c])
+
+            [clojurewerkz.ogre.core :as q]
+            [clojurewerkz.titanium.elements :as elem])
   (:use clojure.test
         [clojurewerkz.titanium.test.support :only (graph-fixture *graph*)])
   (:import org.apache.commons.io.FileUtils
@@ -31,7 +33,7 @@
 
   (testing "Vertex type"
     (tg/with-transaction [tx *graph*]
-        (let [vertex (tv/create! tx)]
+        (let [vertex (tv/create! tx {})]
           (is (= StandardVertex (type vertex)))))))
 
 (deftest graph-of-the-gods
@@ -88,11 +90,11 @@
   (testing "Query graph"
     (tg/with-transaction [tx *graph*]
       (is (= #{"Jupiter" "Neptune" "Pluto"}
-             (set (map (fn [v] (tv/get v :name)) (iterator-seq (tv/find-by-kv tx :type "god"))))))
-      (let [jupiter (.next (tv/find-by-kv tx :name "Jupiter"))]
+             (set (map (fn [v] (elem/value v :name)) (q/traverse (.traversal tx) (q/V) (q/has :type "god") q/into-vec!)))))
+      (let [jupiter (.next (q/traverse (.traversal tx) (q/V) (q/has :name "Jupiter")))]
         (is jupiter)
         (let [lives (ted/head-vertex (.next (tv/edges-of jupiter :out :lives)))]
-          (is "Sky" (tv/get lives :name))))))
+          (is "Sky" (elem/value lives :name))))))
 
   (testing "Graph variables"
     (is (= nil

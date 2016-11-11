@@ -10,7 +10,8 @@
 
 (ns clojurewerkz.titanium.elements
   (:refer-clojure :exclude [assoc! dissoc!])
-  (:require [clojure.walk :as w])
+  (:require [clojure.walk :as w]
+            [clojurewerkz.ogre.util :as u])
   (:import [org.apache.tinkerpop.gremlin.structure Element Vertex]
            [com.thinkaurelius.titan.core TitanElement]))
 
@@ -41,3 +42,46 @@
    false otherwise"
   [^TitanElement e]
   (.isRemoved e))
+
+(defn id-of
+  "Returns the id of the entity."
+  [^TitanElement e]
+  (.id e))
+
+(defn label-of
+  "Returns the label of the entity."
+  [^TitanElement e]
+  (keyword (.label e)))
+                                        ;
+(defn set-properties!
+  "Adds properties with the specified keys and values to an element."
+  ([^Element elem properties]
+   (when-not (empty? properties)
+     (apply set-properties! elem (apply concat properties)))
+   elem)
+  ([^Element elem key val]
+   (.property elem (name key) val)
+   elem)
+  ([^Element elem key val & kvs]
+   (set-properties! elem key val)
+   (doseq [kv (partition 2 kvs)]
+     (.property elem (name (first kv)) (last kv)))
+   elem))
+
+(defn remove-properties!
+  "Removes properties with the specified keys from an element."
+  [^Element elem & keys]
+  (doseq [key keys] (.remove (.property elem (name key))))
+  elem)
+
+(defn remove-all-properties!
+  "Removes all properties from an element."
+  [^Element elem]
+  (apply remove-properties! (cons elem (.keys elem))))
+
+(defn value
+  "Gets the value(s) of the property with the supplied key."
+  [element property-key]
+  (let [^java.util.Iterator prop-iter (-> element (.properties (u/keywords-to-str-array [property-key])))
+        prop (if (.hasNext prop-iter) (map #(.value %) (iterator-seq prop-iter)) nil)]
+    (if (= (count prop) 1) (first prop) prop)))
