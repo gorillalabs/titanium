@@ -71,7 +71,8 @@
 (defn remove-properties!
   "Removes properties with the specified keys from an element."
   [^Element elem & keys]
-  (doseq [key keys] (.remove (.property elem (name key))))
+  (doseq [key keys]
+    (doall (map #(.remove % ) (iterator-seq (.properties elem (u/keywords-to-str-array [key]))))))
   elem)
 
 (defn remove-all-properties!
